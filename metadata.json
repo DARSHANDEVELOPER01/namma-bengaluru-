@@ -1,0 +1,6 @@
+{
+  "name": "Namma Bengaluru - Cleanup Mission & Reward System",
+  "description": "Smart Bengaluru city cleanliness platform where citizens report waste with GPS and photos, earn UPI rewards, and field staff coordinate cleanups.",
+  "requestFramePermissions": ["geolocation", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

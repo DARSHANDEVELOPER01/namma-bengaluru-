@@ -1,0 +1,169 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile document storing role and account metadata.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "citizen", "field_staff"] },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "ward": { "type": "string", "maxLength": 100 },
+        "zone": { "type": "string", "maxLength": 100 },
+        "upiId": { "type": "string", "maxLength": 80 },
+        "avatarUrl": { "type": "string", "maxLength": 500 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "role", "name", "email"]
+    },
+    "StaffApplication": {
+      "title": "StaffApplication",
+      "description": "Staff registration application awaiting admin approval.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "employeeId": { "type": "string", "maxLength": 50 },
+        "assignedArea": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 250 },
+        "profilePhotoUrl": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string" },
+        "reviewedAt": { "type": "string" },
+        "reviewedBy": { "type": "string" }
+      },
+      "required": ["id", "uid", "name", "email", "phone", "status"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Garbage report submitted by citizen with GPS location and photo evidence.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 50 },
+        "citizenId": { "type": "string", "maxLength": 128 },
+        "citizenName": { "type": "string", "maxLength": 100 },
+        "citizenPhone": { "type": "string", "maxLength": 20 },
+        "citizenUpi": { "type": "string", "maxLength": 80 },
+        "category": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "photoBefore": { "type": "string" },
+        "photoAfter": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "submitted",
+            "under_review",
+            "approved",
+            "assigned",
+            "cleaning_in_progress",
+            "completed",
+            "reward_approved",
+            "reward_paid",
+            "rejected"
+          ]
+        },
+        "priority": { "type": "string", "enum": ["Normal", "High", "Urgent"] },
+        "assignedStaffId": { "type": "string" },
+        "assignedStaffName": { "type": "string" },
+        "assignedStaffPhone": { "type": "string" },
+        "cleaningNotes": { "type": "string", "maxLength": 1000 },
+        "adminNotes": { "type": "string", "maxLength": 1000 },
+        "rejectionReason": { "type": "string", "maxLength": 500 },
+        "rewardAmount": { "type": "number" },
+        "rewardStatus": { "type": "string", "enum": ["none", "pending", "approved", "processing", "paid", "rejected"] },
+        "payoutMethod": { "type": "string", "maxLength": 50 },
+        "payoutTransactionRef": { "type": "string", "maxLength": 50 },
+        "payoutTimestamp": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "completedAt": { "type": "string" }
+      },
+      "required": ["id", "citizenId", "citizenName", "category", "description", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Recorded UPI payment transaction for approved cleanliness reward.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "reportId": { "type": "string" },
+        "citizenId": { "type": "string" },
+        "citizenName": { "type": "string" },
+        "amount": { "type": "number" },
+        "upiId": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "transactionRef": { "type": "string" },
+        "status": { "type": "string" },
+        "paidAt": { "type": "string" },
+        "adminUid": { "type": "string" }
+      },
+      "required": ["id", "reportId", "citizenId", "amount", "transactionRef", "status"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Public notice broadcast by BBMP administration.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "titleKn": { "type": "string", "maxLength": 200 },
+        "message": { "type": "string", "maxLength": 1000 },
+        "messageKn": { "type": "string", "maxLength": 1000 },
+        "date": { "type": "string" },
+        "priority": { "type": "string", "enum": ["info", "alert", "event"] }
+      },
+      "required": ["id", "title", "message", "date"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification for report updates, cleaning tasks, and reward payouts.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "targetRole": { "type": "string" },
+        "title": { "type": "string" },
+        "titleKn": { "type": "string" },
+        "message": { "type": "string" },
+        "messageKn": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "read": { "type": "boolean" },
+        "complaintId": { "type": "string" },
+        "type": { "type": "string" }
+      },
+      "required": ["id", "title", "message", "timestamp", "read"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "#/entities/User",
+      "description": "User documents keyed by Firebase Auth UID."
+    },
+    "/staffApplications/{applicationId}": {
+      "schema": "#/entities/StaffApplication",
+      "description": "Field staff registration applications."
+    },
+    "/reports/{reportId}": {
+      "schema": "#/entities/Report",
+      "description": "Citizen cleanliness reports and complaints."
+    },
+    "/payments/{paymentId}": {
+      "schema": "#/entities/Payment",
+      "description": "Audited UPI reward payment receipts."
+    },
+    "/announcements/{announcementId}": {
+      "schema": "#/entities/Announcement",
+      "description": "Public BBMP notices."
+    },
+    "/notifications/{notificationId}": {
+      "schema": "#/entities/Notification",
+      "description": "User notifications."
+    }
+  }
+}
